@@ -92,7 +92,7 @@ def scramble_u():
 # <editor-fold desc="DISPLAY / RETRIEVE DATA FROM CUBE"
 
 
-def display_cube_state():
+def display_cube_state(face_list=[]):
     """
     displays the cube's current state.  The cube is retrieved piece by piece from get_piece_color, which this function
     calls repeatedly
@@ -100,9 +100,12 @@ def display_cube_state():
     post-conditions: prints out the cube as ASCII
     :return: None
     """
-    colors = []
-    for call in indexes_for_printing:
-        colors.append(get_piece_color(call[0], call[1]))
+    if not face_list:
+        colors = []
+        for call in indexes_for_printing:
+            colors.append(get_piece_color(call[0], call[1]))
+    else:
+        colors = face_list
     print("\n    +---+\n    |",
 
           # Top square
@@ -793,7 +796,13 @@ def face_by_face_input():
 
     :return:
     """
-    pass
+    face_list = []
+    for i in range(54):
+        face_list.append("█")
+    print(face_list)
+    for i in range(54):
+        # face_list
+        pass
 
 
 def infinite_iteration():
@@ -878,7 +887,8 @@ def main():
     current_cube_pos = copy.deepcopy(solved_cube_pos)
     current_cube_col = copy.deepcopy(solved_cube_col)
     # test_forever('hardcore')
-    infinite_iteration()
+    # infinite_iteration()
+    face_by_face_input()
 
 
 main()
