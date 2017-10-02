@@ -101,8 +101,8 @@ def display_cube_state():
     :return: None
     """
     colors = []
-    for call in range(0, len(indexes_for_printing)):
-        colors.append(get_piece_color(indexes_for_printing[call[0]], indexes_for_printing[call[1]]))
+    for call in indexes_for_printing:
+        colors.append(get_piece_color(call[0], call[1]))
     print("\n    +---+\n    |",
 
           # Top square
@@ -159,8 +159,8 @@ def is_solved():
     :return: bool, True if solved, False if not
     """
     colors = []
-    for call in range(0, len(indexes_for_printing), 2):
-        colors.append(get_piece_color(indexes_for_printing[call], indexes_for_printing[call + 1]))
+    for call in indexes_for_printing:
+        colors.append(get_piece_color(call[0], call[1]))
     if colors[0] == colors[1] == colors[2] == colors[3] == colors[4] == colors[5] == colors[6] == colors[7] == \
             colors[8]:
         if colors[9] == colors[10] == colors[11] == colors[21] == colors[22] == colors[23] == colors[33] == \
@@ -793,7 +793,7 @@ def face_by_face_input():
 
     :return:
     """
-
+    pass
 
 
 def infinite_iteration():
