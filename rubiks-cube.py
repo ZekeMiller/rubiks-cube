@@ -1,7 +1,9 @@
 """
 Written by Ezekiel Miller
 Started 9/27/17 (give or take a day)
-cubology.py
+rubiks-cube.py
+
+Disclaimer: I realize this could definitely be optimized/written better, but it is in a constant state of development.
 """
 import algs
 from variables_n_such import *
@@ -99,8 +101,8 @@ def display_cube_state():
     :return: None
     """
     colors = []
-    for call in range(0, len(indexes_for_printing), 2):
-        colors.append(get_piece_color(indexes_for_printing[call], indexes_for_printing[call + 1]))
+    for call in range(0, len(indexes_for_printing)):
+        colors.append(get_piece_color(indexes_for_printing[call[0]], indexes_for_printing[call[1]]))
     print("\n    +---+\n    |",
 
           # Top square
@@ -784,6 +786,14 @@ def test_forever(scramble_type):
 
 
 # <editor-fold desc="OTHER">
+
+
+def face_by_face_input():
+    """
+
+    :return:
+    """
+
 
 
 def infinite_iteration():
