@@ -96,7 +96,9 @@ def display_cube_state(face_list=[]):
     """
     displays the cube's current state.  The cube is retrieved piece by piece from get_piece_color, which this function
     calls repeatedly
-    pre-conditions: A cube exists for get_piece_color to call
+    :param face_list: list of characters, will be printed onto the cube instead of retrieving from the cube (likely
+    the cube does not yet exist)
+    pre-conditions: if list is provided, it is sufficient to display on the cube
     post-conditions: prints out the cube as ASCII
     :return: None
     """
@@ -798,11 +800,13 @@ def face_by_face_input():
     """
     face_list = []
     for i in range(54):
-        face_list.append("█")
-    print(face_list)
+        face_list.append(" ")
+    # print(face_list)
     for i in range(54):
-        # face_list
-        pass
+        face_list = list(''.join(face_list).replace(" ", "X", 1))
+        display_cube_state(face_list)
+        # print(face_list)
+        face_list[i] = input("What color is the face where the X is? Please use only the first letter. ")[0]
 
 
 def infinite_iteration():
