@@ -798,6 +798,8 @@ def face_by_face_input():
 
     :return:
     """
+    global current_cube_pos, current_cube_col
+    color_list = ['w', 'y', 'r', 'g', 'b', 'o']
     face_list = []
     for i in range(54):
         face_list.append(" ")
@@ -805,8 +807,79 @@ def face_by_face_input():
     for i in range(54):
         face_list = list(''.join(face_list).replace(" ", "X", 1))
         display_cube_state(face_list)
-        # print(face_list)
-        face_list[i] = input("What color is the face where the X is? Please use only the first letter. ")[0]
+        while True:
+            piece = input("What color is the face where the X is? Please use only the first letter. ")[0].lower()
+            if piece in color_list:
+                face_list[i] = piece
+                break
+            else:
+                print("Invalid input.")
+
+    # uncomment for a legally reachable scramble instead of inputs
+    # face_list = "o g o y b r r w o g b g y o w b y g w o y b o g r w r w r w g y r" \
+    #             " y y w b g y r o g w b o r y b o g b b w r"
+    # face_list = face_list.split()
+
+    BLU = "corner_" + ''.join(sorted(face_list[9] + face_list[0] + face_list[20]))
+    current_cube_col[BLU] = [face_list[9], face_list[0], face_list[20]]
+    BU = "edge_" + ''.join(sorted(face_list[1] + face_list[19]))
+    current_cube_col[BU] = [0, face_list[1], face_list[19]]
+    BRU = "corner_" + ''.join(sorted(face_list[17] + face_list[2] + face_list[18]))
+    current_cube_col[BRU] = [face_list[17], face_list[2], face_list[18]]
+    LU = "edge_" + ''.join(sorted(face_list[10] + face_list[3]))
+    current_cube_col[LU] = [face_list[10], face_list[3], 0]
+    U = "center_" + face_list[4]
+    current_cube_col[U] = [0, face_list[4], 0]
+    RU = "edge_" + ''.join(sorted(face_list[16] + face_list[5]))
+    current_cube_col[RU] = [face_list[16], face_list[5], 0]
+    FLU = "corner_" + ''.join(sorted(face_list[11] + face_list[6] + face_list[12]))
+    current_cube_col[FLU] = [face_list[11], face_list[6], face_list[12]]
+    FU = "edge_" + ''.join(sorted(face_list[7] + face_list[13]))
+    current_cube_col[FU] = [0, face_list[7], face_list[13]]
+    FRU = "corner_" + ''.join(sorted(face_list[15] + face_list[8] + face_list[14]))
+    current_cube_col[FRU] = [face_list[15], face_list[8], face_list[14]]
+
+    BL = "edge_" + ''.join(sorted(face_list[21] + face_list[32]))
+    current_cube_col[BL] = [face_list[21], 0, face_list[32]]
+    L = "center_" + face_list[22]
+    current_cube_col[L] = [face_list[22], 0, 0]
+    FL = "edge_" + ''.join(sorted(face_list[23] + face_list[24]))
+    current_cube_col[FL] = [face_list[23], 0, face_list[24]]
+    F = "center_" + face_list[25]
+    current_cube_col[F] = [0, 0, face_list[25]]
+    FR = "edge_" + ''.join(sorted(face_list[27] + face_list[26]))
+    current_cube_col[FR] = [face_list[27], 0, face_list[26]]
+    R = "center_" + face_list[28]
+    current_cube_col[R] = [face_list[28], 0, 0]
+    BR = "edge_" + ''.join(sorted(face_list[29] + face_list[30]))
+    current_cube_col[BR] = [face_list[29], 0, face_list[30]]
+    B = "center_" + face_list[31]
+    current_cube_col[B] = [0, 0, face_list[31]]
+
+    BDL = "corner_" + ''.join(sorted(face_list[33] + face_list[51] + face_list[44]))
+    current_cube_col[BDL] = [face_list[33], face_list[51], face_list[44]]
+    DL = "edge_" + ''.join(sorted(face_list[34] + face_list[48]))
+    current_cube_col[DL] = [face_list[34], face_list[48], 0]
+    DFL = "corner_" + ''.join(sorted(face_list[35] + face_list[45] + face_list[36]))
+    current_cube_col[DFL] = [face_list[35], face_list[45], face_list[36]]
+    DF = "edge_" + ''.join(sorted(face_list[46] + face_list[37]))
+    current_cube_col[DF] = [0, face_list[46], face_list[37]]
+    DFR = "corner_" + ''.join(sorted(face_list[39] + face_list[47] + face_list[38]))
+    current_cube_col[DFR] = [face_list[39], face_list[47], face_list[38]]
+    DR = "edge_" + ''.join(sorted(face_list[40] + face_list[50]))
+    current_cube_col[DR] = [face_list[40], face_list[50], 0]
+    DBR = "corner_" + ''.join(sorted(face_list[41] + face_list[53] + face_list[42]))
+    current_cube_col[DBR] = [face_list[41], face_list[53], face_list[42]]
+    D = "center_" + face_list[49]
+    current_cube_col[D] = [0, face_list[49], 0]
+    pieces_names = ['BLU', 'BU', 'BRU', 'LU', 'U', 'RU', 'FLU', 'FU', 'FRU', 'BL', 'L', 'FL', 'F', 'FR', 'R', 'BR', 'B',
+                    'BDL', 'DL', 'DFL', 'DF', 'DFR', 'DR', 'BDR', 'D']
+    pieces = [BLU, BU, BRU, LU, U, RU, FLU, FU, FRU, BL, L, FL, F, FR, R, BR, B, BDL, DL, DFL, DF, DFR, DR, DBR, D]
+    for i in range(len(pieces)):
+        current_cube_pos[pieces[i]] = f2l_position_translator[pieces_names[i]]
+    display_cube_state()
+    if sorted(list(current_cube_pos.keys())) == sorted(list(solved_cube_pos.keys())):
+        print("Cube has all valid pieces")
 
 
 def infinite_iteration():
@@ -841,42 +914,45 @@ def infinite_iteration():
             for piece in current_cube_pos:
                 current_cube_pos[piece] = solved_cube_pos[piece]
                 current_cube_col[piece] = solved_cube_col[piece]
+            continue
         elif request.lower() == "moves performed":
             print(len(performed_moves), "moves")
             print(' '.join(performed_moves_and_algs))
             print(' '.join(performed_moves))
-            # print(performed_moves)
+            continue
         elif request.lower() == "solve":
-            if not solve():
+            solve()
+            if not is_solved():
                 print("Sorry, I couldn't figure out how to solve it.  Make sure the cube is solvable!")
-            #
+            continue
         elif request.lower() == "cross naive":
             cross_naive()
-            #
+            continue
         elif request.lower() == "f2l":
             f2l()
-            #
+            continue
         elif request.lower() == "2 look oll":
             oll_look_1()
             oll_look_2()
+            continue
         elif request.lower() == "oll look 1":
             oll_look_1()
-            #
+            continue
         elif request.lower() == "oll look 2":
             oll_look_2()
-            #
+            continue
         elif request.lower() == "pll":
             pll()
-            #
+            continue
         elif request.lower() == "pll sequence":
             pll_sequencer()
-            #
+            continue
         elif request in acceptable_list:
             turn_interpreter(request)
-            #
+            continue
         elif request.lower() in list(algs.algorithms.keys()):
             turn_string_parser(algs.algorithms[request.lower()])
-            #
+            continue
         else:
             print("Input not recognized.")
 
@@ -888,11 +964,14 @@ def main():
     # starting_cube_pos = solved_cube_pos
     # starting_cube_col = solved_cube_col
     global current_cube_pos, current_cube_col
-    current_cube_pos = copy.deepcopy(solved_cube_pos)
-    current_cube_col = copy.deepcopy(solved_cube_col)
+    starting = input("Would you like to start with a solved cube? [y/n] ").lower()
+    if starting == 'y':
+        current_cube_pos = copy.deepcopy(solved_cube_pos)
+        current_cube_col = copy.deepcopy(solved_cube_col)
+    else:
+        face_by_face_input()
     # test_forever('hardcore')
-    # infinite_iteration()
-    face_by_face_input()
+    infinite_iteration()
 
 
 main()
