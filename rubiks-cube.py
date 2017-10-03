@@ -377,7 +377,7 @@ def cross_naive():
             get_piece_color([1, -1, 0], 'x') == get_piece_color([1, 0, 0], 'x') and \
             get_piece_color([-1, -1, 0], 'y') == bottom and \
                 get_piece_color([-1, -1, 0], 'x') == get_piece_color([-1, 0, 0], 'x'):
-            return True, cross_moves
+            return True
         elif iterations > 20:
             return False
         for _ in range(4):  # clears middle row edges
