@@ -96,8 +96,8 @@ def display_cube_state(face_list=""):
     """
     displays the cube's current state.  The cube is retrieved piece by piece from get_piece_color, which this function
     calls repeatedly
-    :param face_list: list of characters, will be printed onto the cube instead of retrieving from the cube (likely
-    the cube does not yet exist)
+    :param face_list: str, a str of characters seperated by spaces. will be printed onto the cube instead of retrieving
+    from the cube (likely the cube does not yet exist)
     pre-conditions: if list is provided, it is sufficient to display on the cube
     post-conditions: prints out the cube as ASCII
     :return: None
