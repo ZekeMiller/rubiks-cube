@@ -1,3 +1,7 @@
+DISCLAIMER: I have been working on this project for less than a week, and I realize it is not perfect.  However, it is functional, and constantly being updated/improved.  Please bear with me through some of the semantic issues.
+
+
+
 This is pretty much where I kept notes to keep everything straight in my mind while working.
 
 
