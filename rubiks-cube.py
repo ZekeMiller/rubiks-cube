@@ -922,7 +922,8 @@ def infinite_iteration():
     """
     while True:
         display_cube_state()
-        request = input("Which turn or alg to perform? ('exit' to exit, 'help' for additional commands) ")
+        request = input("Which turn or alg to perform? (basic commands include turns in standard notation, scramble,"
+                        " reset, and solve) ")
         if request.lower() == "exit":
             print("Program will now exit")
             exit()  # could add option to save state to file
