@@ -1,3 +1,7 @@
+DISCLAIMER: I have been working on this project for less than a week, and I realize it is not perfect.  However, it is functional, and constantly being updated/improved.  Please bear with me through some of the semantic issues.
+
+
+
 This is pretty much where I kept notes to keep everything straight in my mind while working.
 
 
@@ -48,6 +52,13 @@ Piece position:
 
 
 reduction U0 = U-8,-4,0,4,8; U1 = U-7,-3,1,5,9; U2 = U-6,-2,2,6,10; U'(-1(3)) = U-5,-1,3,7,11
+
+
+
+Face Input:
+  once I have the color of each face, I can pull a list a face colors to name the piece
+  I am going to maintain the same YRGOBW color scheme, including positioning, for now, though I could ask the user for faces (top center? bottom center? etc.)
+
 
 
 Ideas for expansion (large things):
