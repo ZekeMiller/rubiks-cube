@@ -327,6 +327,8 @@ def solve():
     this function houses calls to each individual step method (Cross F2l Oll Pll = CFOP.  In this case I use 2look OLL)
     :return: bool, True if cube solved, False (and the step it broke at) if not
     """
+    global performed_moves_and_algs
+    performed_moves_and_algs = []
     if cross_naive():
         if f2l():
             if oll_look_1():
@@ -366,8 +368,10 @@ def cross_naive():
     big_u_turns, d_turns = 0, 0
     iterations = 0
     global performed_moves_and_algs
+    performed_moves_and_algs.append("\nCross  ")
     while True:
         iterations += 1         # just so it doesn't go forever if something weird goes wrong
+        # performed_moves_and_algs.append(str(iterations))
         # display_cube_state()
         if get_piece_color([0, -1, 1], 'y') == bottom and \
             get_piece_color([0, -1, 1], 'z') == get_piece_color([0, 0, 1], 'z') and \
@@ -380,6 +384,7 @@ def cross_naive():
             return True
         elif iterations > 20:
             return False
+
         for _ in range(4):  # clears middle row edges
             if get_piece_color([1, 0, 1], 'z') == bottom or get_piece_color([1, 0, 1], 'x') == bottom:
                 while get_piece_color([0, 1, 1], 'z') == bottom or get_piece_color([0, 1, 1], 'y') == bottom:
@@ -401,10 +406,12 @@ def cross_naive():
             turn(-1, "E")
             turn(1, "D")
 
+        performed_moves_and_algs.append(reduce_values("d", d_turns))
+        d_turns = 0
+
         for _ in range(4):  # gets all incorrect pieces out of bottom layer without putting anything in E row
-            if (get_piece_color([0, -1, 1], 'y') == bottom and get_piece_color([0, -1, 1], 'z') != get_piece_color([
-                    0, 0, 1], 'z')) or get_piece_color([0, -1, 1], 'z') == bottom:  # DF contains white but is incorrect
-                d_turns = 0
+            if ((get_piece_color([0, -1, 1], 'y') == bottom and get_piece_color([0, -1, 1], 'z') != get_piece_color([
+                    0, 0, 1], 'z')) or get_piece_color([0, -1, 1], 'z') == bottom):  # DF contains white but is incorrect
                 while get_piece_color([0, 1, 1], 'z') == bottom or get_piece_color([0, 1, 1], 'y') == bottom:
                     # display_cube_state()
                     big_u_turns += 1
@@ -413,7 +420,6 @@ def cross_naive():
                 big_u_turns_final = reduce_values("U", big_u_turns)
                 big_u_turns, d_turns = 0, 0
                 turn_string_parser("F2")
-                # print(d_turns_final, big_u_turns_final, "F2", end=' ')
                 temp_turns = ''
                 if big_u_turns_final != '':
                     temp_turns += big_u_turns_final
@@ -421,12 +427,12 @@ def cross_naive():
                     temp_turns += d_turns_final
                 temp_turns += "F2"
                 performed_moves_and_algs.append(temp_turns)
-
             d_turns += 1
             turn(-1, "E")
             turn(1, "D")
 
-        big_u_turns, d_turns = 0, 0
+        performed_moves_and_algs.append(reduce_values("d", d_turns))
+        d_turns = 0
         for __ in range(4):  # gets all pieces out of top layer correctly in bottom layer
             if get_piece_color([0, 1, 1], 'y') == bottom:  # white piece top layer facing U
                 while get_piece_color([0, 1, 1], 'z') != get_piece_color([0, 0, 1], 'z'):  # the piece matches center
@@ -446,7 +452,7 @@ def cross_naive():
                 performed_moves_and_algs.append(temp_turns)
                 turn_interpreter('F2')  # flips the piece into place
 
-            if get_piece_color([0, 1, 1], 'z') == bottom:  # white piece top layer facing F
+            elif get_piece_color([0, 1, 1], 'z') == bottom:  # white piece top layer facing F
                 while get_piece_color([0, 1, 1], 'y') != get_piece_color([0, 0, 1], 'z'):  # the piece matches center
                     d_turns += 1
                     turn(-1, 'E')
@@ -464,15 +470,20 @@ def cross_naive():
                 performed_moves_and_algs.append(temp_turns)
                 turn_string_parser("U' R' F R")  # flips the piece into place
             turn(1, 'U')
+            big_u_turns += 1
 
 
 def f2l():
     """
     completely color neutral, simply assumes the current bottom is the bottom to be solved, and that it's cross is done
     solves bottom corners and middle layer edges
+
+    need to add a case for if the edge is already in place, to not pull it out, but it's really late and tomorrow is
+    another day
     :return: bool, True if f2l solved, False if not
     """
     global performed_moves_and_algs
+    performed_moves_and_algs.append("\nF2L  ")
     bottom = get_piece_color([0, -1, 0], 'y')
     if not (get_piece_color([1, -1, 0], 'y') == bottom and get_piece_color([-1, -1, 0], 'y') == bottom and
             get_piece_color([0, -1, 1], 'y') == bottom and get_piece_color([0, -1, -1], 'y') == bottom):
@@ -498,7 +509,10 @@ def f2l():
     # could make color neutral by generating these lists from centers
 
     for value in range(4):
+        # display_cube_state()
         corner, edge = corners[value], edges[value]
+        # print(corner, edge)
+        d_turns, u_turns = 0, 0
         # print(corner)
         # display_cube_state()
         # print(corner + " " + edge)
@@ -521,6 +535,7 @@ def f2l():
                 turn_interpreter("U'")
                 performed_moves_and_algs.append("U'")
             final_d_turns = reduce_values("d", d_turns)
+            d_turns = 0
             temp_turns = final_d_turns + "R U R'"
             turn_string_parser("R U R'")
             performed_moves_and_algs.append(temp_turns)
@@ -535,9 +550,10 @@ def f2l():
                 d_turns += 1
             if current_cube_pos[corner] == [1, 1, 1]:  # makes sure active corner won't go to DFR
                 turn_interpreter("U")
-                performed_moves_and_algs.append("U'")
+                performed_moves_and_algs.append("U")
             final_d_turns = reduce_values("d", d_turns)
             temp_turns = final_d_turns + "R U R'"
+            d_turns = 0
             performed_moves_and_algs.append(temp_turns)
             turn_string_parser("R U R'")
 
@@ -546,25 +562,25 @@ def f2l():
         non_bottom_colors = corner.replace('corner_', '')
         non_bottom_colors = non_bottom_colors.replace(get_piece_color([0, -1, 0], 'y'), '')
         non_bottom_colors = [non_bottom_colors[0], non_bottom_colors[1]]
-        d_turns = 0
+
         while not (get_piece_color([0, 0, 1], 'z') in non_bottom_colors and
                    get_piece_color([1, 0, 0], 'x') in non_bottom_colors):  # gets active corner spot to DFR
             turn(-1, "E")
             turn(1, "D")
             d_turns += 1
-        final_d_turns = reduce_values("U", d_turns)
+        final_d_turns = reduce_values("d", d_turns)
+        d_turns = 0
         performed_moves_and_algs.append(final_d_turns)
 
         # at this point the corner and edge should either be in place or in U, and the active slot should be DFR/FR
 
-        u_turns = 0
         while not (current_cube_pos[corner] == [1, 1, 1] or current_cube_pos[corner] == [1, -1, 1]):  # corner DFR/FRU
             u_turns += 1
             turn(1, "U")
-        final_u_turns = reduce_values("U", u_turns)
-        performed_moves_and_algs.append(final_u_turns)
+        # final_u_turns = reduce_values("U", u_turns)
+        # performed_moves_and_algs.append(final_u_turns)
         front_temp = get_piece_color([0, 0, 1], 'z')
-        u_turns = 0
+        # u_turns = 0
         while True:
             case = (list(f2l_position_translator.keys())[list(f2l_position_translator.values()).index(current_cube_pos[
                                                                                                     corner])] + '_')
@@ -574,10 +590,13 @@ def f2l():
             case += (f2l_position_translator[(current_cube_col[edge].index(front_temp))])
             if case in algs.algorithms:
                 break
-            else:
-                u_turns += 1
-                turn(1, "U")
+            # else:
+            #     u_turns += 1
+            #     turn(1, "U")
         performed_moves_and_algs.append(reduce_values("U", u_turns))
+        u_turns = 0
+        # performed_moves_and_algs.append(case)
+        performed_moves_and_algs.append(algs.algorithms[case])
         turn_string_parser(algs.algorithms[case])
 
     if get_piece_color([-1, 0, 1], 'z') == get_piece_color([-1, -1, 1], 'z') == get_piece_color([0, 0, 1], 'z') == \
@@ -604,6 +623,7 @@ def oll_look_1():
     :return: bool, True if look 1 done, False if not
     """
     global performed_moves_and_algs
+    performed_moves_and_algs.append("\nOLL Look 1  ")
     u_r_edge_top = get_piece_color([1, 1, 0], 'y')
     u_l_edge_top = get_piece_color([-1, 1, 0], 'y')
     u_f_edge_top = get_piece_color([0, 1, 1], 'y')
@@ -653,6 +673,7 @@ def oll_look_2():
     :return: bool, True if second look done, False if not
     """
     global performed_moves_and_algs
+    performed_moves_and_algs.append("\nOLL Look 2  ")
     u_r_f_top = get_piece_color([1, 1, 1], 'y')
     u_l_f_top = get_piece_color([-1, 1, 1], 'y')
     u_r_b_top = get_piece_color([1, 1, -1], 'y')
@@ -711,7 +732,7 @@ def oll_look_2():
     final_turn = reduce_values('U', u_turns)
     if final_turn != '':
         temp_turns = final_turn + case + "(" + algs.algorithms[case] + ")"
-        performed_moves_and_algs.append(temp_turns)
+    performed_moves_and_algs.append(temp_turns)
     turn_string_parser(algs.algorithms[case])
 
     # cross should be completed at this point
@@ -734,6 +755,7 @@ def pll():
     :return: bool, True if pll is done, False if not (though if it isn't it's probably gonna crash anyway)
     """
     global performed_moves_and_algs
+    performed_moves_and_algs.append("\nPLL  ")
     u_turns = 0
     for _ in range(4):
         sequence = pll_sequencer()
@@ -743,7 +765,7 @@ def pll():
                 u_turns_final = reduce_values("U", u_turns)
                 temp_turns = u_turns_final + case + "(" + algs.algorithms[case] + ")"
                 performed_moves_and_algs.append(temp_turns)
-                performed_moves.append(u_turns_final)
+                # performed_moves.append(u_turns_final)
                 turn_string_parser(algs.algorithms[case])
                 break
             else:
@@ -760,7 +782,7 @@ def pll():
             u_turns += 1
         u_turns_final = reduce_values("U", u_turns)
         performed_moves_and_algs.append(u_turns_final)
-        performed_moves.append(u_turns_final)
+        # performed_moves.append(u_turns_final)
         return True
     else:
         return False
@@ -813,10 +835,10 @@ def face_by_face_input():
     color_list = ['w', 'y', 'r', 'g', 'b', 'o']
     face_list = []
     for i in range(54):
-        face_list.append(" ")
+        face_list.append("?")
     # print(face_list)
     for i in range(54):
-        face_list = list(''.join(face_list).replace(" ", "X", 1))
+        face_list = list(''.join(face_list).replace("?", "X", 1))
         display_cube_state(' '.join(face_list))
         while True:
             piece = input("What color is the face where the X is? Please use only the first letter. ")[0].lower()
@@ -919,7 +941,7 @@ def infinite_iteration():
                 if input("Print the scramble? [y/n] ") == 'y':
                     print(' '.join(scramble))
                 break
-        elif request == "solvesolvesolvethanks":
+        elif request == "reset":
             for piece in current_cube_pos:
                 current_cube_pos[piece] = solved_cube_pos[piece]
                 current_cube_col[piece] = solved_cube_col[piece]
@@ -927,7 +949,7 @@ def infinite_iteration():
         elif request.lower() == "moves performed":
             print(len(performed_moves), "moves")
             print(' '.join(performed_moves_and_algs))
-            print(' '.join(performed_moves))
+            # print(' '.join(performed_moves))
             continue
         elif request.lower() == "solve":
             solve()
@@ -935,6 +957,7 @@ def infinite_iteration():
                 print("Sorry, I couldn't figure out how to solve it.  Make sure the cube is solvable!")
             else:
                 print("The cube is solved! Ta-da!")
+                print(' '.join(performed_moves_and_algs))
                 continue
         elif request.lower() == "cross naive":
             cross_naive()
@@ -976,11 +999,13 @@ def infinite_iteration():
         else:
             request_list = request.split(" ")
             for req in request_list:
-                if req in acceptable_list:
-                    turn_interpreter(req)
-            if is_solved():
-                print("The cube is solved! Ta-da!")
-            continue
+                if req not in acceptable_list:
+                    print("invalid input, please try again")
+                    break
+            else:
+                turn_string_parser(request)
+                if is_solved():
+                    print("The cube is solved! Ta-da!")
 
 
 # </editor-fold>
