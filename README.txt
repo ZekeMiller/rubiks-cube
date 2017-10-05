@@ -84,3 +84,8 @@ Other:
 
 superflip							Flips each edge
 checkerboard						Makes a checkerboard on a solved cube
+
+
+ACKNOWLEDGEMENTS:
+All credit for the algorithm pdf goes to badmephisto of kungfoomanchoo.com
+I modified the file a bit for my personal use, but I did not originally create it
