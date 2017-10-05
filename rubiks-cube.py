@@ -947,11 +947,12 @@ def infinite_iteration():
                 current_cube_pos[piece] = solved_cube_pos[piece]
                 current_cube_col[piece] = solved_cube_col[piece]
             continue
-        elif request.lower() == "moves performed":
-            print(len(performed_moves), "moves")
-            print(' '.join(performed_moves_and_algs))
-            # print(' '.join(performed_moves))
-            continue
+        # elif request.lower() == "moves performed":
+        #     print(len(performed_moves), "moves")
+        #     print(' '.join(performed_moves_and_algs))
+        #     # print(' '.join(performed_moves))
+        #     continue
+        # need to unify how everything works before this is worth doing
         elif request.lower() == "solve":
             solve()
             if not is_solved():
@@ -960,7 +961,7 @@ def infinite_iteration():
                 print("The cube is solved! Ta-da!")
                 print(' '.join(performed_moves_and_algs))
                 continue
-        elif request.lower() == "cross naive":
+        elif request.lower() == "cross":
             cross_naive()
             if is_solved():
                 print("The cube is solved! Ta-da!")
@@ -989,9 +990,10 @@ def infinite_iteration():
         elif request.lower() == "pll":
             pll()
             continue
-        elif request.lower() == "pll sequence":
-            pll_sequencer()
-            continue
+        # elif request.lower() == "pll sequence":
+        #     pll_sequencer()
+        #     continue
+        # useless to the user, was only for testing
         elif request.lower() in list(algs.algorithms.keys()):
             turn_string_parser(algs.algorithms[request.lower()])
             if is_solved():

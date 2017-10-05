@@ -7,7 +7,7 @@ cases, then to learn the algs after, as well as making it much easier to solve
 
 algorithms = {
 
-    # <editor-fold desc="F2L">
+    # <editor-fold desc="F2L (purposefully not callable)">
     # Standard formula for F2L:
     # ABC_OF_CORNER + _ + F_face_corner_face[x/y/z] + _ + AB_OF_EDGE + _ + F_face_edge_face[x/y/z]
     # pos[7:]_<not sure how to determine which is which>_pos[5:]
