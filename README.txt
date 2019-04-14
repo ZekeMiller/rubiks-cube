@@ -1,5 +1,4 @@
-DISCLAIMER: I have been working on this project for less than a week, and I realize it is not perfect.  However, it is functional, and constantly being updated/improved.  Please bear with me through some of the semantic issues.
-
+DISCLAIMER: I made this project over the course of a week my first year of college when I didn't know what design was and all I knew was python.  Leaving up as historical evidence of the progress I've made as a dev, and because I enjoyed making it
 
 Rubik's Cube Solver Project:
 
